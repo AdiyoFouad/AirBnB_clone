@@ -36,6 +36,7 @@ class BaseModel:
         """Update the public instance attribute update_at with the current date"""
         self.updated_at = datetime.today()
 
+
     def to_dict(self):
         """Return a dictionnary that contain all key/values of __dict__ of the instance with a added key __class__ """
         new_dict = self.__dict__.copy()
