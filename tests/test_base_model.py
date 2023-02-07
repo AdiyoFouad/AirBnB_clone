@@ -46,6 +46,26 @@ class TestBaseModel(unittest.TestCase):
         self.assertIn("'updated_at': " + repr(dte), bmstr)
 
 
+    def test_args_unused(self):
+        base_model = BaseModel()
+        self.assertNotIn(None, base_model.__dict__.values())
+    
+    def test_instantiation_with_kwargs(self):
+        dte = datetime.today()
+        dte_iso = dte.isoformat()
+        base_model = BaseModel(id='1234', created_at=dte_iso, updated_at=dte_iso)
+        self.assertEqual(base_model.id, '1234')
+        self.assertEqual(base_model.created_at, dte)
+        self.assertEqual(base_model.updated_at, dte)
+
+    def test_instantiation_with_args_and_kwargs(self):
+        dte = datetime.today()
+        dte_iso = dte.isoformat()
+        base_model = BaseModel("12",id='1234', created_at=dte_iso, updated_at=dte_iso)
+        self.assertEqual(base_model.id, '1234')
+        self.assertEqual(base_model.created_at, dte)
+        self.assertEqual(base_model.updated_at, dte)
+
 
     """Unittest for testing save method of the BaseModel class"""
 
