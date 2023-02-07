@@ -1,6 +1,6 @@
 
 from models.base_model import BaseModel
-import unittest
+import unittest, os
 from datetime import datetime
 from time import sleep
 
@@ -68,6 +68,24 @@ class TestBaseModel(unittest.TestCase):
 
 
     """Unittest for testing save method of the BaseModel class"""
+
+    @classmethod
+    def setUp(self):
+        try:
+            os.rename("file.json","tmp")
+        except IOError:
+            pass
+
+    @classmethod
+    def tearDown(self):
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("tmp","file.json")
+        except IOError:
+            pass  
 
     def test_one_save(self):
         base_model = BaseModel()
