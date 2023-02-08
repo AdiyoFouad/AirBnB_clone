@@ -1,8 +1,13 @@
 #!/usr/bin/python3
 
 """Define FileStorage class """
-import json
-from models.base_model import BaseModel
+import os, sys, json
+
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+
+from base_model import BaseModel
 
 class FileStorage:
     __file__path = 'file.json'

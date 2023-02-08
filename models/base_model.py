@@ -3,7 +3,7 @@
 
 from datetime import datetime
 import uuid
-from . import *
+from models import storage
 
 class BaseModel:
     """Represent a BaseModel."""
@@ -28,6 +28,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.today()
             self.updated_at = datetime.today()
+            storage.new(self)
 
     def __str__(self):
         """Define the print() representation of a BasModel"""
