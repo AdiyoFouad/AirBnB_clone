@@ -2,12 +2,18 @@
 """Module for the entry point of the command interpreter."""
 
 import cmd
+from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
 
     """Class for the command interpreter."""
 
     prompt = "(hbnb) "
+
+    
+    classes = {
+        'BaseModel' : BaseModel()
+    }
 
     def default(self, line):
         """Commande innexistante"""
@@ -25,10 +31,19 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """Create a new instance of BaseModel"""
-        var = line.split()
-        print(var)
+        arg = line.split()
+        
+        if (len(arg) == 0):
+            print("class name is missing")
+        else:
+            if (arg[0] not in HBNBCommand.classes.keys()):
+                print("class doesn't exist")
+            else:
+                instance = HBNBCommand.classes[arg[0]]
+                instance.save()
+                print(instance.id)
 
-
+    
 
     def emptyline(self):
         """Doesn't do anything on ENTER."""
