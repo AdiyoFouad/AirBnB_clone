@@ -1,13 +1,8 @@
 #!/usr/bin/python3
 
 """Define FileStorage class """
-import os, sys, json
-
-current = os.path.dirname(os.path.realpath(__file__))
-parent = os.path.dirname(current)
-sys.path.append(parent)
-
-from base_model import BaseModel
+import json
+from models.base_model import BaseModel
 
 class FileStorage:
     __file__path = 'file.json'
@@ -19,7 +14,7 @@ class FileStorage:
 
     def new(self, obj):
         """Set in __objects the obj with the key <obj classname>.id"""
-        FileStorage.__objects[f"{obj__class__.name}.{obj.id}"] = obj
+        FileStorage.__objects[f"{obj.__class__.__name__}.{obj.id}"] = obj
 
     def save(self):
         """Serializes __objects to JSON fie"""
