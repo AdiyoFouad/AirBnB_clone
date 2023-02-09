@@ -43,8 +43,6 @@ class HBNBCommand(cmd.Cmd):
                 instance.save()
                 print(instance.id)
 
-    
-
     def emptyline(self):
         """Doesn't do anything on ENTER."""
         pass
