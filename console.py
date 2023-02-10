@@ -3,7 +3,7 @@
 
 import cmd, models, re
 from models.base_model import BaseModel
-from models.base_model import User
+from models.user import User
 from models.city import City
 from models.place import Place
 from models.state import State
@@ -17,7 +17,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     classes = {
-        'BaseModel' : BaseModel()
+        'BaseModel' : BaseModel(),
         'User': User()
     }
 
@@ -41,7 +41,7 @@ class HBNBCommand(cmd.Cmd):
         Create a new instance of BaseModel
         """
         arg = line.split()
-        
+
         if (len(arg) == 0):
             print("** class name is missing **")
         else:
@@ -175,12 +175,12 @@ class HBNBCommand(cmd.Cmd):
                                 obj.__dict__[attribute] = value
                                 print("update")
                             else:
-                                print("** value missing **")                       
-    
+                                print("** value missing **")
+
     def emptyline(self):
         """Doesn't do anything on ENTER."""
         pass
-    
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
