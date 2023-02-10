@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 
 from models.base_model import BaseModel
 import unittest, os
@@ -6,7 +7,7 @@ from time import sleep
 
 class TestBaseModel(unittest.TestCase):
 
-    """Unitttests for testing instantation of the BaseModel class."""
+    """Unittests for testing instantation of the BaseModel class."""
     
     def test_id_is_public_str(self):
         self.assertEqual(str, type(BaseModel().id))

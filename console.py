@@ -3,6 +3,7 @@
 
 import cmd, models, re
 from models.base_model import BaseModel
+from models.base_model import User
 
 class HBNBCommand(cmd.Cmd):
 
@@ -12,6 +13,7 @@ class HBNBCommand(cmd.Cmd):
 
     classes = {
         'BaseModel' : BaseModel()
+        'User': User()
     }
 
     def default(self, line):
