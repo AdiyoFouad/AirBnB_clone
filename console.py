@@ -182,8 +182,7 @@ class HBNBCommand(cmd.Cmd):
                 if not attribute:
                     print("** attribute name missing **")
                 elif attribute in ['id', 'created_at', 'updated_at']:
-                    pass
-                    #print(f"** attribute \"{attribute}\" can't be updated **")
+                    print(f"** attribute \"{attribute}\" can't be updated **")
                 else:
                     if not value:
                         print("** value missing **")
