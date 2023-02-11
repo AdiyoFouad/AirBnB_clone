@@ -14,8 +14,10 @@ class BaseModel:
             self (BaseModel): current instance
             args (any): not used here
             kwargs (dict) : dictionnary of key/value pairs attributes
-        """
-
+        """    
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.today()
+        self.updated_at = datetime.today()
         if len(kwargs):
             date_format = "%Y-%m-%dT%H:%M:%S.%f" 
             for key,value in kwargs.items():
@@ -25,9 +27,6 @@ class BaseModel:
                     self.__dict__[key] = value
                     
         else:
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.today()
-            self.updated_at = datetime.today()
             models.storage.new(self)
 
     def __str__(self):
@@ -38,6 +37,7 @@ class BaseModel:
         """Update the public instance attribute update_at with the current date"""
         self.updated_at = datetime.today()
         models.storage.save()
+        models.storage.reload()
 
 
     def to_dict(self):

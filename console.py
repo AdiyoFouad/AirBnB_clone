@@ -215,6 +215,24 @@ class HBNBCommand(cmd.Cmd):
                                 pass
                                 #print("** value missing **")                       
     
+    def do_count(self, line):
+        """
+        Retrieve the number of instances of a class
+        Usage: <class name>.count()
+        """
+        all_objects = []
+        if (line == "" or line is None):
+            for value in models.storage.all().values():
+                all_objects.append(str(value))
+            print(all_objects)
+        else:
+            if (line not in HBNBCommand.classes.keys()):
+                print("** class doesn't exist **")
+            else:
+                for key, value in models.storage.all().items():
+                    if (line in key):
+                        all_objects.append(str(value))
+                print(len(all_objects))
     
     def emptyline(self):
         """Doesn't do anything on ENTER."""
