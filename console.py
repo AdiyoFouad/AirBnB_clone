@@ -72,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
         Create a new instance of BaseModel
         """
         arg = line.split()
-        
+
         if (len(arg) == 0):
             print("** class name is missing **")
         else:
@@ -206,13 +206,18 @@ class HBNBCommand(cmd.Cmd):
                                 obj.__dict__[attribute] = value
                                 print("update")
                             else:
+<<<<<<< HEAD
                                 print("** value missing **")                       
     
     
+=======
+                                print("** value missing **")
+
+>>>>>>> 060bf61b7ed94b10385d8e5d496769538f1f9c8c
     def emptyline(self):
         """Doesn't do anything on ENTER."""
         pass
-    
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
