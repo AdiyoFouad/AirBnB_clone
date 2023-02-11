@@ -212,8 +212,8 @@ class HBNBCommand(cmd.Cmd):
                                 value = value.replace('"','')
                                 obj.__dict__[attribute] = value
                                 #print("update")
-                                pass
                             else:
+                                pass
                                 #print("** value missing **")                       
     
     
