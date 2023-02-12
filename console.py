@@ -194,14 +194,15 @@ class HBNBCommand(cmd.Cmd):
 
         all_objects = storage.all()
 
-        #rex = r'^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:"[^"]*")|(?:(\S)+)))?)?)?'
+        rex = r'^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:"[^"]*")|(?:(\S)+)))?)?)?\s(.*)'
         #rex = r'^(\S+)\s(\S+)\s(\S+)\s((?:"[^"][ ]*")|(\S+))\s(.*)'
-        rex = r'^(\S+)\s(\S+)\s(\S+)((?:\s((?:"[^"]*")|(?:(\S)+))))?\s(.*)'
+        #rex = r'^(\S+)\s(\S+)\s(\S+)((?:\s((?:"[^"]*")|(?:(\S)+))))?\s(.*)'
         match = re.search(rex, line)
         classname = match.group(1)
         ins_id = match.group(2)
         attribute = match.group(3)
         value = match.group(4)
+        
         
         if not match:
             print("** class name missing **")
@@ -220,8 +221,8 @@ class HBNBCommand(cmd.Cmd):
                 elif attribute in ['id', 'created_at', 'updated_at']:
                     print(f"** attribute \"{attribute}\" can't be updated **")
                 elif re.search(r'^{', attribute):
-                    if match.group(7):
-                        value = value + match.group(7)
+                    if match.group(6):
+                        value = value + match.group(6)
                     if value and re.search(r'(}$)', value) and re.search(r'^((?!{).)*$', value):
                         attribute = attribute + value
                     else:
