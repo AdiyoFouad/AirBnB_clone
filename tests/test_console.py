@@ -167,9 +167,7 @@ EOF  all  count  create  destroy  help  quit  show  update
         key = "{}.{}".format(classname, uid)
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("{}.all()".format(classname))
-        
-        print(f.getvalue()[:-1])
-        #self.assertTrue(uid in f.getvalue())
+        self.assertTrue(uid in f.getvalue())
 
 
 if __name__ == "__main__":
