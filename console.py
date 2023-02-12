@@ -160,61 +160,45 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
 
-        all_objects = storage.all()
-
         rex = r'^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:"[^"]*")|(?:(\S)+)))?)?)?'
         match = re.search(rex, line)
         classname = match.group(1)
-        ins_id = match.group(2)
+        uid = match.group(2)
         attribute = match.group(3)
         value = match.group(4)
-
         if not match:
             print("** class name missing **")
-        elif classname not in HBNBCommand.classes.keys():
+        elif classname not in storage.classes():
             print("** class doesn't exist **")
-        elif ins_id is None:
+        elif uid is None:
             print("** instance id missing **")
         else:
-            key = classname + '.' + ins_id
-            if key not in all_objects.keys():
+            key = "{}.{}".format(classname, uid)
+            if key not in storage.all():
                 print("** no instance found **")
+            elif not attribute:
+                print("** attribute name missing **")
+            elif not value:
+                print("** value missing **")
             else:
-                if not attribute:
-                    print("** attribute name missing **")
-                elif attribute in ['id', 'created_at', 'updated_at']:
-                    print(f"** attribute \"{attribute}\" can't be updated **")
-                else:
-                    if not value:
-                        print("** value missing **")
+                cast = None
+                if not re.search('^".*"$', value):
+                    if '.' in value:
+                        cast = float
                     else:
-                        obj = all_objects[key]
-                        if attribute in obj.__dict__.keys():
-                            if not re.search('^".*"$', value):
-                                try:
-                                    if '.' in value:
-                                        value = float(value)
-                                    else:
-                                        value = int(value)
-                                except ValueError:
-                                    #print("** value missing **")
-                                    return
-                            else:
-                                value = value.replace('"','')
-                            if type(value) == type(obj.__dict__[attribute]):
-                                obj.__dict__[attribute] = value
-                                #print("update")
-                            else:
-                                #print("value error")
-                                pass
-                        else:
-                            if re.search('^".*"$', value):
-                                value = value.replace('"','')
-                                obj.__dict__[attribute] = value
-                                #print("update")
-                            else:
-                                pass
-                                #print("** value missing **")                       
+                        cast = int
+                else:
+                    value = value.replace('"', '')
+                attributes = storage.attributes()[classname]
+                if attribute in attributes:
+                    value = attributes[attribute](value)
+                elif cast:
+                    try:
+                        value = cast(value)
+                    except ValueError:
+                        pass  # fine, stay a string then
+                setattr(storage.all()[key], attribute, value)
+                storage.all()[key].save()                       
     
     def do_count(self, line):
         """
