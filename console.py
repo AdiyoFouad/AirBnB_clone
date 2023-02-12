@@ -156,48 +156,65 @@ class HBNBCommand(cmd.Cmd):
         Usage: update <class name> <id> <attribute name> <attribute value>
         Update an instance based on the class name and id by adding or update a attribute
         """
-        args = parse(arg)
-        objdict = storage.all()
-
-        if len(args) == 0:
+        if line == "" or line is None:
             print("** class name missing **")
-            return False
-        elif args[0] not in HBNBCommand.__classes:
+            return
+
+        all_objects = storage.all()
+
+        rex = r'^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:"[^"]*")|(?:(\S)+)))?)?)?'
+        match = re.search(rex, line)
+        classname = match.group(1)
+        ins_id = match.group(2)
+        attribute = match.group(3)
+        value = match.group(4)
+
+        if not match:
+            print("** class name missing **")
+        elif classname not in HBNBCommand.classes.keys():
             print("** class doesn't exist **")
-            return False
-        elif len(args) == 1:
+        elif ins_id is None:
             print("** instance id missing **")
-            return False
-        elif "{}.{}".format(args[0], args[1]) not in objdict:
-            print("** no instance found **")
-            return False
-        elif len(args) == 2:
-            print("** attribute name missing **")
-            return False
-        elif len(args) == 3:
-            try:
-                type(eval(args[2])) != dict
-            except NameError:
-                print("** value missing **")
-                return False
-        elif len(args) == 4:
-            obj = objdict["{}.{}".format(args[0], args[1])]
-            if args[2] in obj.__class__.__dict__.keys():
-                valtype = type(obj.__class__.__dict__[args[2]])
-                obj.__dict__[args[2]] = valtype(args[3])
+        else:
+            key = classname + '.' + ins_id
+            if key not in all_objects.keys():
+                print("** no instance found **")
             else:
-                obj.__dict__[args[2]] = args[3]
-        elif type(eval(args[2])) == dict:
-            obj = objdict["{}.{}".format(args[0], args[1])]
-            for k, v in eval(args[2]).items():
-                k_in_keys = k in obj.__class__.__dict__.keys()
-                type_in = type(obj.__class__.__dict__[k]) in {str, int, float}
-                if (k_in_keys and type_in):
-                    valtype = type(obj.__class__.__dict__[k])
-                    obj.__dict__[k] = valtype(v)
+                if not attribute:
+                    print("** attribute name missing **")
+                elif attribute in ['id', 'created_at', 'updated_at']:
+                    print(f"** attribute \"{attribute}\" can't be updated **")
                 else:
-                    obj.__dict__[k] = v
-        storage.save()                       
+                    if not value:
+                        print("** value missing **")
+                    else:
+                        obj = all_objects[key]
+                        if attribute in obj.__dict__.keys():
+                            if not re.search('^".*"$', value):
+                                try:
+                                    if '.' in value:
+                                        value = float(value)
+                                    else:
+                                        value = int(value)
+                                except ValueError:
+                                    #print("** value missing **")
+                                    return
+                            else:
+                                value = value.replace('"','')
+                            if type(value) == type(obj.__dict__[attribute]):
+                                obj.__dict__[attribute] = value
+                                #print("update")
+                            else:
+                                #print("value error")
+                                pass
+                        else:
+                            if re.search('^".*"$', value):
+                                value = value.replace('"','')
+                                obj.__dict__[attribute] = value
+                                #print("update")
+                            else:
+                                pass
+                                #print("** value missing **")                       
     
     def do_count(self, line):
         """
