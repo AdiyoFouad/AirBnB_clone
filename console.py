@@ -156,49 +156,48 @@ class HBNBCommand(cmd.Cmd):
         Usage: update <class name> <id> <attribute name> <attribute value>
         Update an instance based on the class name and id by adding or update a attribute
         """
-        if line == "" or line is None:
-            print("** class name missing **")
-            return
+        args = parse(arg)
+        objdict = storage.all()
 
-        rex = r'^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:"[^"]*")|(?:(\S)+)))?)?)?'
-        match = re.search(rex, line)
-        classname = match.group(1)
-        uid = match.group(2)
-        attribute = match.group(3)
-        value = match.group(4)
-        if not match:
+        if len(args) == 0:
             print("** class name missing **")
-        elif classname not in storage.classes():
+            return False
+        elif args[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
-        elif uid is None:
+            return False
+        elif len(args) == 1:
             print("** instance id missing **")
-        else:
-            key = "{}.{}".format(classname, uid)
-            if key not in storage.all():
-                print("** no instance found **")
-            elif not attribute:
-                print("** attribute name missing **")
-            elif not value:
+            return False
+        elif "{}.{}".format(args[0], args[1]) not in objdict:
+            print("** no instance found **")
+            return False
+        elif len(args) == 2:
+            print("** attribute name missing **")
+            return False
+        elif len(args) == 3:
+            try:
+                type(eval(args[2])) != dict
+            except NameError:
                 print("** value missing **")
+                return False
+        elif len(args) == 4:
+            obj = objdict["{}.{}".format(args[0], args[1])]
+            if args[2] in obj.__class__.__dict__.keys():
+                valtype = type(obj.__class__.__dict__[args[2]])
+                obj.__dict__[args[2]] = valtype(args[3])
             else:
-                cast = None
-                if not re.search('^".*"$', value):
-                    if '.' in value:
-                        cast = float
-                    else:
-                        cast = int
+                obj.__dict__[args[2]] = args[3]
+        elif type(eval(args[2])) == dict:
+            obj = objdict["{}.{}".format(args[0], args[1])]
+            for k, v in eval(args[2]).items():
+                k_in_keys = k in obj.__class__.__dict__.keys()
+                type_in = type(obj.__class__.__dict__[k]) in {str, int, float}
+                if (k_in_keys and type_in):
+                    valtype = type(obj.__class__.__dict__[k])
+                    obj.__dict__[k] = valtype(v)
                 else:
-                    value = value.replace('"', '')
-                attributes = storage.attributes()[classname]
-                if attribute in attributes:
-                    value = attributes[attribute](value)
-                elif cast:
-                    try:
-                        value = cast(value)
-                    except ValueError:
-                        pass  # fine, stay a string then
-                setattr(storage.all()[key], attribute, value)
-                storage.all()[key].save()                       
+                    obj.__dict__[k] = v
+        storage.save()                       
     
     def do_count(self, line):
         """
