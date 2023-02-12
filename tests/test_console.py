@@ -38,8 +38,8 @@ class TestHBNBCommand(unittest.TestCase):
     def resetStorage(self):
         """Resets FileStorage data."""
         FileStorage._FileStorage__objects = {}
-        if os.path.isfile(FileStorage.get_file_path()):
-            os.remove(FileStorage.get_file_path())
+        if os.path.isfile(FileStorage._FileStorage__file_path):
+            os.remove(FileStorage._FileStorage__file_path)
 
     def setUp(self):
         """Sets up test cases."""
