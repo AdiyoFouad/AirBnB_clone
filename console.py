@@ -220,16 +220,6 @@ class HBNBCommand(cmd.Cmd):
                     print("** attribute name missing **")
                 elif attribute in ['id', 'created_at', 'updated_at']:
                     print(f"** attribute \"{attribute}\" can't be updated **")
-                elif re.search(r'^{', attribute):
-                    if match.group(6):
-                        value = value + match.group(6)
-                    if value and re.search(r'(}$)', value) and re.search(r'^((?!{).)*$', value):
-                        attribute = attribute + value
-                    else:
-                        return
-                    value = eval(attribute)
-                    for key, val in value.items():
-                        help_do_update(obj, key, f'"{val}"')
                 else:
                     if not value:
                         print("** value missing **")
