@@ -194,7 +194,7 @@ class HBNBCommand(cmd.Cmd):
 
         all_objects = storage.all()
 
-        rex = r'^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:"[^"]*")|(?:(\S)+)))?)?)?\s(.*)'
+        rex = r'^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:"[^"]*")|(?:(\S)+)))?)?)?'
         #rex = r'^(\S+)\s(\S+)\s(\S+)\s((?:"[^"][ ]*")|(\S+))\s(.*)'
         #rex = r'^(\S+)\s(\S+)\s(\S+)((?:\s((?:"[^"]*")|(?:(\S)+))))?\s(.*)'
         match = re.search(rex, line)
@@ -224,7 +224,31 @@ class HBNBCommand(cmd.Cmd):
                     if not value:
                         print("** value missing **")
                     else:
-                        help_do_update(obj, attribute, value)                       
+                        if attribute in obj.__dict__.keys():
+                            if re.search('^".*"$', value):
+                                try:
+                                    if '.' in value:
+                                        value = float(value)
+                                    else:
+                                        value = int(value)
+                                except ValueError:
+                                    #print("** value missing **")
+                                    return
+                            else:
+                                value = value.replace('"','')
+                            if type(value) == type(obj.__dict__[attribute]):
+                                obj.__dict__[attribute] = value
+                                #print("update")
+                            else:
+                                #print("value error")
+                                pass
+                        else:
+                            if re.search('^".*"$', str(value)):
+                                value = value.replace('"','')
+                                obj.__dict__[attribute] = value
+                            else:
+                                pass
+                                #print("** value missing **")                       
     
     def do_count(self, line):
         """
