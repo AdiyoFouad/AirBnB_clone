@@ -201,6 +201,7 @@ class HBNBCommand(cmd.Cmd):
                                     return
                             else:
                                 value = value.replace('"','')
+                            print(type(value))
                             if type(value) == type(obj.__dict__[attribute]):
                                 obj.__dict__[attribute] = value
                                 #print("update")
