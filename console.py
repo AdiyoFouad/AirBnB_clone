@@ -82,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
         arg = line.split()
 
         if (len(arg) == 0):
-            print("** class name is missing **")
+            print("** class name missing **")
         else:
             if (arg[0] not in HBNBCommand.classes.keys()):
                 print("** class doesn't exist **")
@@ -99,20 +99,22 @@ class name and id
         """
 
         args = line.split()
+        if re.search(r'"',args[1]):
+            args[1] = args[1].replace('"','')
         if (len(args) == 0):
-            print("** class name is missing **")
-        elif (len(args) == 1):
+            print("** class name missing **")
+        elif (len(args) >= 1):
             if (args[0] not in HBNBCommand.classes.keys()):
                 print("** class doesn't exist **")
-            else:
+            elif(len(args) == 1):
                 print("** instance id missing **")
-        else:
-            all_objects = storage.all()
-            key = args[0] + '.' + args[1]
-            if (key not in all_objects.keys()):
-                print("** no instance found **")
             else:
-                print(str(all_objects[key]))
+                all_objects = storage.all()
+                key = args[0] + '.' + args[1]
+                if (key not in all_objects.keys()):
+                    print("** no instance found **")
+                else:
+                    print(str(all_objects[key]))
 
     def do_destroy(self, line):
         """
@@ -120,20 +122,22 @@ class name and id
         Delete an instance based on the class name and id
         """
         args = line.split()
+        if re.search(r'"',args[1]):
+            args[1] = args[1].replace('"','')
         if (len(args) == 0):
-            print("** class name is missing **")
-        elif (len(args) == 1):
+            print("** class name missing **")
+        elif (len(args) >= 1):
             if (args[0] not in HBNBCommand.classes.keys()):
                 print("** class doesn't exist **")
-            else:
+            elif(len(args) == 1):
                 print("** instance id missing **")
-        else:
-            all_objects = storage.all()
-            key = args[0] + '.' + args[1]
-            if (key not in all_objects.keys()):
-                print("** no instance found **")
             else:
-                del all_objects[key]
+                all_objects = storage.all()
+                key = args[0] + '.' + args[1]
+                if (key not in all_objects.keys()):
+                    print("** no instance found **")
+                else:
+                    del all_objects[key]
 
     def do_all(self, line):
         """
