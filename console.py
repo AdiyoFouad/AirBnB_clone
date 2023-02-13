@@ -17,6 +17,9 @@ class HBNBCommand(cmd.Cmd):
 
     """Class for the command interpreter."""
 
+    def __init__(self):
+        storage.reload()
+
     def _precmd(self, line):
         """Intercepts commands to test for class.syntax()"""
         # print("PRECMD:::", line)
