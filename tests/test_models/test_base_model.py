@@ -39,7 +39,7 @@ class TestBaseModel(unittest.TestCase):
         dte = datetime.today()
         bm = BaseModel()
         bm.id = "00000"
-        bm.created_at = bm.update_at = dte
+        bm.created_at = bm.updated_at = dte
         bmstr = bm.__str__()
         self.assertIn("[BaseModel] (00000)", bmstr)
         self.assertIn("'id': '00000'", bmstr)
