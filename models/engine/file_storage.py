@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 """Define FileStorage class """
-import json, sys
+import json
+import sys
 from models.base_model import BaseModel
 from models.user import User
 from models.city import City
@@ -9,6 +10,7 @@ from models.place import Place
 from models.state import State
 from models.amenity import Amenity
 from models.review import Review
+
 
 class FileStorage:
     __file_path = 'file.json'
@@ -31,7 +33,6 @@ class FileStorage:
         with open(FileStorage.__file_path, "w") as f:
             json.dump(objects_dict, f)
 
-
     def reload(self):
         """Deserializes the JSON file to __objects"""
         try:
@@ -43,5 +44,3 @@ class FileStorage:
                     self.new(eval(class_name)(**obj))
         except FileNotFoundError:
             return
-
-    
