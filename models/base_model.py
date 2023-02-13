@@ -5,6 +5,7 @@ from datetime import datetime
 import uuid
 import models
 
+
 class BaseModel:
     """Represent a BaseModel."""
 
@@ -14,13 +15,13 @@ class BaseModel:
             self (BaseModel): current instance
             args (any): not used here
             kwargs (dict) : dictionnary of key/value pairs attributes
-        """    
+        """
         self.id = str(uuid.uuid4())
         self.created_at = datetime.today()
         self.updated_at = datetime.today()
         if len(kwargs):
-            date_format = "%Y-%m-%dT%H:%M:%S.%f" 
-            for key,value in kwargs.items():
+            date_format = "%Y-%m-%dT%H:%M:%S.%f"
+            for key, value in kwargs.items():
                 if key in ['created_at', 'updated_at']:
                     self.__dict__[key] = datetime.strptime(value, date_format)
                 else:
@@ -34,13 +35,14 @@ class BaseModel:
         return f'[{self.__class__.__name__}] ({self.id}) {self.__dict__}'
 
     def save(self):
-        """Update the public instance attribute update_at with the current date"""
+        """Update the public instance attribute update_at with the 
+        current date"""
         self.updated_at = datetime.today()
         models.storage.save()
 
-
     def to_dict(self):
-        """Return a dictionnary that contain all key/values of __dict__ of the instance with a added key __class__ """
+        """Return a dictionnary that contain all key/values of __dict__ of the 
+        instance with a added key __class__ """
         new_dict = self.__dict__.copy()
         new_dict['__class__'] = self.__class__.__name__
         new_dict['created_at'] = self.created_at.isoformat()
