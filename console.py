@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """Module for the entry point of the command interpreter."""
 
-import cmd, re
+import cmd
+import re
 from models.base_model import BaseModel
 from models.user import User
 from models.city import City
@@ -11,33 +12,6 @@ from models.amenity import Amenity
 from models.review import Review
 from models import storage
 
-def help_do_update(obj, attribute,value):
-    """This function update obj's attribute with value"""
-    if attribute in obj.__dict__.keys():
-        if re.search('^".*"$', value):
-            try:
-                if '.' in value:
-                    value = float(value)
-                else:
-                    value = int(value)
-            except ValueError:
-                #print("** value missing **")
-                return
-        else:
-            value = value.replace('"','')
-        if type(value) == type(obj.__dict__[attribute]):
-            obj.__dict__[attribute] = value
-            #print("update")
-        else:
-            #print("value error")
-            pass
-    else:
-        if re.search('^".*"$', str(value)):
-            value = value.replace('"','')
-            obj.__dict__[attribute] = value
-        else:
-            pass
-            #print("** value missing **")
 
 class HBNBCommand(cmd.Cmd):
 
@@ -78,7 +52,7 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     classes = {
-        'BaseModel' : BaseModel,
+        'BaseModel': BaseModel,
         'User': User,
         'State': State,
         'City': City,
@@ -120,7 +94,8 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, line):
         """
         Usage: show <class name>  <id>
-        Print the string representation of an instance based on the class name and id
+        Print the string representation of an instance based on the \
+class name and id
         """
 
         args = line.split()
@@ -179,14 +154,11 @@ class HBNBCommand(cmd.Cmd):
                         all_objects.append(str(value))
             print(all_objects)
 
-    
-    
-
-
     def do_update(self, line):
         """
         Usage: update <class name> <id> <attribute name> <attribute value>
-        Update an instance based on the class name and id by adding or update a attribute
+        Update an instance based on the class name and id by adding or update \
+a attribute
         """
         if line == "" or line is None:
             print("** class name missing **")
@@ -195,15 +167,11 @@ class HBNBCommand(cmd.Cmd):
         all_objects = storage.all()
 
         rex = r'^(\S+)(?:\s(\S+)(?:\s(\S+)(?:\s((?:"[^"]*")|(?:(\S)+)))?)?)?'
-        #rex = r'^(\S+)\s(\S+)\s(\S+)\s((?:"[^"][ ]*")|(\S+))\s(.*)'
-        #rex = r'^(\S+)\s(\S+)\s(\S+)((?:\s((?:"[^"]*")|(?:(\S)+))))?\s(.*)'
         match = re.search(rex, line)
         classname = match.group(1)
         ins_id = match.group(2)
         attribute = match.group(3)
-        value = match.group(4)
-        
-        
+        value = match.group(4)       
         if not match:
             print("** class name missing **")
         elif classname not in HBNBCommand.classes.keys():
@@ -232,24 +200,18 @@ class HBNBCommand(cmd.Cmd):
                                     else:
                                         value = int(value)
                                 except ValueError:
-                                    #print("** value missing **")
                                     return
                             else:
-                                value = value.replace('"','')
+                                value = value.replace('"', '')
                             if type(value) == type(obj.__dict__[attribute]):
                                 obj.__dict__[attribute] = value
-                                #print("update")
                             else:
-                                #print("value error")
                                 pass
                         else:
                             if re.search('^".*"$', str(value)):
                                 value = value.replace('"','')
                                 obj.__dict__[attribute] = value
-                            else:
-                                pass
-                                #print("** value missing **")                       
-    
+
     def do_count(self, line):
         """
         Retrieve the number of instances of a class
@@ -268,7 +230,7 @@ class HBNBCommand(cmd.Cmd):
                     if (line in key):
                         all_objects.append(str(value))
                 print(len(all_objects))
-    
+
     def emptyline(self):
         """Doesn't do anything on ENTER."""
         pass
