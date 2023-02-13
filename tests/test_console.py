@@ -177,6 +177,88 @@ or update a attribute\n        \n'
             HBNBCommand().onecmd("{}.all()".format(classname))
         self.assertTrue(uid in f.getvalue())
 
+    def test_do_count(self):
+        """Tests count for all classes."""
+        for classname in self.classes():
+            self.help_test_do_count(classname)
+
+    def help_test_do_count(self, classname):
+        """Helper method to test the count commmand."""
+        self.resetStorage()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create {}".format(classname))
+        uid = f.getvalue()[:-1]
+        self.assertTrue(len(uid) > 0)
+        key = "{}.{}".format(classname, uid)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("{}.count()".format(classname))
+        self.assertEqual('1', f.getvalue()[:-1])
+
+    def test_do_show(self):
+        """Tests show for all classes."""
+        for classname in self.classes():
+            self.help_test_do_show(classname)
+
+    def help_test_do_show(self, classname):
+        """Helper method to test the count commmand."""
+        self.resetStorage()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create {}".format(classname))
+        uid = f.getvalue()[:-1]
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'{classname}.show("{uid}")')
+        self.assertIn(f'[{classname}]', f.getvalue()[:-1])
+        self.assertIn(f'({uid})', f.getvalue()[:-1])
+        self.assertIn(f"'id': '{uid}'", f.getvalue()[:-1])
+
+    def test_do_destroy(self):
+        """Tests count for all classes."""
+        for classname in self.classes():
+            self.help_test_do_destroy(classname)
+
+    def help_test_do_destroy(self, classname):
+        """Helper method to test the count commmand."""
+        self.resetStorage()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create {}".format(classname))
+        uid = f.getvalue()[:-1]
+        self.assertTrue(len(uid) > 0)
+        key = "{}.{}".format(classname, uid)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("{}.count()".format(classname))
+        self.assertEqual('1', f.getvalue()[:-1])
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'{classname}.destroy("{uid}")')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("{}.count()".format(classname))
+        self.assertEqual('0', f.getvalue()[:-1])
+
+    def test_update_everything(self):
+        """Tests update command for all classes."""
+        for classname in self.classes():
+            self.help_test_do_update(classname)
+
+    def help_test_do_update(self, classname):
+        """Tests update commmand."""
+        test_random_attributes = {
+            "strfoo": "barfoo",
+            "intfoo": 248,
+            "floatfoo": 9.8
+        }
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create {}".format(classname))
+        uid = f.getvalue()[:-1]
+        self.assertTrue(len(uid) > 0)
+        for att, value in test_random_attributes.items():
+            with patch('sys.stdout', new=StringIO()) as f:
+                HBNBCommand().onecmd(f'{classname}.update("{uid}", "{att}", "{value}")')
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(f'{classname}.show("{uid}")')
+        for att, value in test_random_attributes.items():
+            self.assertIn(f"'{att}': '{value}'", f.getvalue()[:-1])
+        
+        
+
 
 if __name__ == "__main__":
     unittest.main()
