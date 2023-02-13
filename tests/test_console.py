@@ -58,7 +58,7 @@ EOF  all  count  create  destroy  help  quit  show  update
 
 """
         self.assertEqual(s, f.getvalue())
-    
+
     def test_help_EOF(self):
         """Tests the help command."""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -77,42 +77,50 @@ EOF  all  count  create  destroy  help  quit  show  update
         """Tests the help command."""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help create")
-        s = '\n        Usage: create <class name>\n        Create a new instance of BaseModel\n        \n'
+        s = '\n        Usage: create <class name>\n        \
+Create a new instance of BaseModel\n        \n'
         self.assertEqual(s, f.getvalue())
 
     def test_help_show(self):
         """Tests the help command."""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help show")
-        s = '\n        Usage: show <class name>  <id>\n        Print the string representation of an instance based on the class name and id\n        \n'
+        s = '\n        Usage: show <class name>  <id>\n        \
+Print the string representation of an instance based on the class name and id\n        \n'
         self.assertEqual(s, f.getvalue())
 
     def test_help_destroy(self):
         """Tests the help command."""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help destroy")
-        s = '\n        Usage: destroy <class name>  <id>\n        Delete an instance based on the class name and id\n        \n'
+        s = '\n        Usage: destroy <class name>  <id>\n        \
+Delete an instance based on the class name and id\n        \n'
         self.assertEqual(s, f.getvalue())
 
     def test_help_all(self):
         """Tests the help command."""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help all")
-        s = '\n        Usage: all <optional <class name> > or <class name>.all()\n        Print all string representation of all instances based or not on class\n        \n'
+        s = '\n        Usage: all <optional <class name> > or <class name>.all()\n        \
+Print all string representation of all instances based or not on class\n        \n'
         self.assertEqual(s, f.getvalue())
 
     def test_help_count(self):
         """Tests the help command."""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help count")
-        s = '\n        Retrieve the number of instances of a class\n        Usage: <class name>.count()\n        \n'
+        s = '\n        Retrieve the number of instances of a class\n        \
+Usage: <class name>.count()\n        \n'
         self.assertEqual(s, f.getvalue())
 
     def test_help_update(self):
         """Tests the help command."""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("help update")
-        s = '\n        Usage: update <class name> <id> <attribute name> <attribute value>\n        Update an instance based on the class name and id by adding or update a attribute\n        \n'
+        s = '\n        Usage: update <class name> \
+<id> <attribute name> <attribute value>\n        \
+Update an instance based on the class name and id by adding \
+or update a attribute\n        \n'
         self.assertEqual(s, f.getvalue())
 
     def test_do_quit(self):
