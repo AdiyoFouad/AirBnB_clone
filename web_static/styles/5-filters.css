@@ -29,15 +29,15 @@
   }
 
   /* Locations and Amenities */
-  .locations,
-  .amenities {
+  .filters .locations,
+  .filters .amenities {
       display: inline-block;
       height: 100%;
       width: 25%;
   }
 
   /* Locations border */
-  .locations {
+  .filters .locations {
       border-right: 1px solid #DDDDDD;
   }
 
