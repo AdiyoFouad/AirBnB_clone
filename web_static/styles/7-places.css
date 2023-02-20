@@ -17,7 +17,8 @@
 
 /* Places style */
 .places article {
-    display: inline-block;
+    display: flex;
+    flex-flow: row wrap;
     width: 390px;
     margin: 20px;
     padding: 20px;
