@@ -1,0 +1,30 @@
+/*
+ * === Global style ===
+ */
+
+/* Body style */
+body {
+  color: #484848;
+  font: 14px Circular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding-bottom: 80px;
+}
+
+/* Container style */
+.container {
+  margin: 30px auto;
+  max-width: 1000px;
+}
+
+/*
+*
+* === RESPONSIVE DESIGN ===
+*
+*/
+
+@media screen and (max-width:1001px){
+  .container {
+    margin: 30px;
+  }
+}
