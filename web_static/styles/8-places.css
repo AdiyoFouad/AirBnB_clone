@@ -17,21 +17,26 @@
 
 /* Places style */
 .places article {
-    display: flex;
-    flex-flow: row wrap;
     width: 390px;
     margin: 20px;
     padding: 20px;
     border: 1px solid #FF5A5F;
     border-radius: 4px;
-    justify-content: start;
+}
+
+.places article .name_price{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 /* Places Header 2 */
 .places article h2{
     font-size: 30px;
     text-align: center;
-    flex-basis: 80%;
+    flex-basis: 90%;
 }
 
 /* Price style */
@@ -62,3 +67,9 @@
 .places article .information div {
     width: 100px;
 }
+
+
+/* Padding around owner */
+.places .user {
+    margin: 20px 0;
+  }
